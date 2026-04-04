@@ -26,12 +26,16 @@ os.makedirs("temp_audio", exist_ok=True)
 # Načtení Whisper modelu
 print("Loading mikr/whisper-small-cs-cv11 model... This might take a moment.")
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
+torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+
 try:
     transcriber = pipeline(
         "automatic-speech-recognition",
         model="mikr/whisper-small-cs-cv11",
         device=device,
+        torch_dtype=torch_dtype,
         chunk_length_s=30,
+        batch_size=16,
     )
     print(f"Model loaded successfully on {device}.")
 except Exception as e:
