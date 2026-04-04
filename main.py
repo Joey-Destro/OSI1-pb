@@ -27,6 +27,7 @@ os.makedirs("temp_audio", exist_ok=True)
 print("Loading mikr/whisper-small-cs-cv11 model... This might take a moment.")
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+model_kwargs = {"attn_implementation": "sdpa"} if torch.cuda.is_available() else {}
 
 try:
     transcriber = pipeline(
@@ -34,8 +35,9 @@ try:
         model="mikr/whisper-small-cs-cv11",
         device=device,
         torch_dtype=torch_dtype,
+        model_kwargs=model_kwargs,
         chunk_length_s=30,
-        batch_size=16,
+        batch_size=24,
     )
     print(f"Model loaded successfully on {device}.")
 except Exception as e:
