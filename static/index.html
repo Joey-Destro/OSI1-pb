@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="cs" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsirevAI - Exkluzivní Lékařská Zpráva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        gold: {
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#b3932b',
+                        },
+                        slate: {
+                            850: '#151e2e',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, #e5c158, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-button {
+            background: linear-gradient(135deg, #d4af37 0%, #b3932b 100%);
+            box-shadow: 0 10px 20px -10px rgba(212, 175, 55, 0.5);
+            transition: all 0.3s ease;
+        }
+        .gold-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px rgba(212, 175, 55, 0.7);
+        }
+        .gold-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Spinner animation */
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #d4af37;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-6xl w-full space-y-12">
+
+        <div class="text-center space-y-4">
+            <h1 class="font-serif text-5xl md:text-6xl font-semibold tracking-tight text-white">
+                Usirev<span class="gold-gradient-text italic">AI</span>
+            </h1>
+            <div class="text-sm font-semibold tracking-widest text-gold-500 uppercase pb-2">- by pragmed</div>
+            <p class="text-slate-400 font-light text-lg md:text-xl max-w-2xl mx-auto">
+                Pokročilý systém pro automatické generování strukturované lékařské zprávy z hlasového záznamu.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div class="lg:col-span-1 space-y-6">
+
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    <h3 class="text-sm font-semibold tracking-widest text-gold-500 uppercase mb-6">Záznam Pacienta</h3>
+
+                    <div class="space-y-6 relative z-10">
+                        <div class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-slate-700 rounded-2xl bg-slate-800/50 hover:border-gold-500/50 transition-colors">
+                            <button id="recordBtn" class="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500/30 transition-colors shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                            <span id="recordingStatus" class="mt-4 text-sm font-medium text-slate-300">Nahrát přes mikrofon</span>
+                            <span id="recordingTime" class="text-xs text-red-400 font-mono mt-1 hidden">00:00</span>
+                        </div>
+
+                        <div class="flex items-center text-sm text-slate-500 before:flex-1 before:border-t before:border-slate-700 before:mr-4 after:flex-1 after:border-t after:border-slate-700 after:ml-4">
+                            NEBO
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Nahrát existující soubor</label>
+                            <input type="file" id="fileInput" accept="audio/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-700 file:text-white hover:file:bg-slate-600 transition-all cursor-pointer bg-slate-800/50 rounded-xl border border-slate-700">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="submitBtn" class="gold-button w-full text-black font-bold py-4 px-8 rounded-2xl flex items-center justify-center space-x-2">
+                    <span>Generovat Zprávu</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+
+                <div id="errorAlert" class="hidden bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-2xl flex items-start space-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div id="errorMessage" class="text-sm font-medium">Došlo k chybě.</div>
+                </div>
+
+                <div id="loadingState" class="hidden glass-panel rounded-3xl p-12 flex flex-col items-center justify-center space-y-6 text-center h-[500px]">
+                    <div class="spinner"></div>
+                    <div>
+                        <h3 class="text-lg font-medium text-white mb-2">Zpracování probíhá</h3>
+                        <p class="text-slate-400 text-sm">Lokální AI přepisuje zvukový záznam a generuje zprávu...</p>
+                    </div>
+                </div>
+
+                <div id="resultsPanel" class="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col min-h-[600px] lg:h-full">
+                    <div class="flex justify-between items-end mb-4 border-b border-slate-700/50 pb-4">
+                        <h3 class="text-sm font-semibold tracking-widest text-gold-500 uppercase">Výsledná Zpráva</h3>
+                        <button id="copyBtn" class="text-slate-400 hover:text-white transition-colors flex items-center space-x-2 text-sm font-medium" onclick="copyToClipboard()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <span id="copyText">Kopírovat</span>
+                        </button>
+                    </div>
+
+                    <textarea id="anamnesisOutput" class="w-full flex-grow min-h-[300px] md:min-h-[400px] lg:min-h-0 bg-transparent border-0 text-slate-200 text-base leading-relaxed focus:ring-0 resize-y outline-none font-serif placeholder-slate-600" placeholder="Zde se zobrazí vygenerovaná strukturovaná zpráva..." readonly></textarea>
+
+                    <div class="mt-8 pt-6 border-t border-slate-700/50">
+                        <h3 class="text-xs font-semibold tracking-widest text-slate-500 uppercase mb-3">Surový přepis z lokální AI</h3>
+                        <div id="transcriptionOutput" class="bg-slate-900/50 rounded-xl p-4 text-sm text-slate-400 font-mono h-40 overflow-y-auto border border-slate-800">
+                            Zatím žádný text k zobrazení.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let recordedBlob = null;
+        let timerInterval;
+        let secondsRecorded = 0;
+
+        const recordBtn = document.getElementById('recordBtn');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const recordingTime = document.getElementById('recordingTime');
+        const fileInput = document.getElementById('fileInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultsPanel = document.getElementById('resultsPanel');
+        const loadingState = document.getElementById('loadingState');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Format time mm:ss
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        // Toggle Recording
+        recordBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        // Clear file input if recording used
+                        fileInput.value = '';
+                        recordingStatus.textContent = "Záznam pořízen";
+                        recordBtn.classList.remove('bg-red-500', 'animate-pulse');
+                        recordBtn.classList.add('bg-green-500/20', 'text-green-500');
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordedBlob = null;
+
+                    // UI Updates
+                    recordBtn.classList.remove('bg-red-500/20', 'text-red-500', 'bg-green-500/20', 'text-green-500');
+                    recordBtn.classList.add('bg-red-500', 'text-white', 'animate-pulse');
+                    recordingStatus.textContent = "Nahrávám...";
+                    recordingTime.classList.remove('hidden');
+
+                    secondsRecorded = 0;
+                    recordingTime.textContent = formatTime(0);
+                    timerInterval = setInterval(() => {
+                        secondsRecorded++;
+                        recordingTime.textContent = formatTime(secondsRecorded);
+                    }, 1000);
+
+                } catch (err) {
+                    showError("Nelze získat přístup k mikrofonu. Zkontrolujte oprávnění prohlížeče.");
+                }
+            } else {
+                // Stop Recording
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Clear recording if file uploaded
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                recordedBlob = null;
+                recordingStatus.textContent = "Nahrát přes mikrofon";
+                recordingTime.classList.add('hidden');
+                recordBtn.className = "w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500/30 transition-colors shadow-[0_0_20px_rgba(239,68,68,0.2)]";
+            }
+        });
+
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            errorAlert.classList.remove('hidden');
+            loadingState.classList.add('hidden');
+            resultsPanel.classList.remove('hidden');
+            submitBtn.disabled = false;
+        }
+
+        function hideError() {
+            errorAlert.classList.add('hidden');
+        }
+
+        // Submit to API
+        submitBtn.addEventListener('click', async () => {
+            hideError();
+
+            let audioFile = null;
+            if (fileInput.files.length > 0) {
+                audioFile = fileInput.files[0];
+            } else if (recordedBlob) {
+                audioFile = new File([recordedBlob], "recording.webm", { type: 'audio/webm' });
+            }
+
+            if (!audioFile) {
+                showError("Prosím nahrajte zvukový soubor nebo pořiďte záznam z mikrofonu.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("gemini_model", "gemini-3.1-flash-lite-preview");
+
+            // Set UI to loading
+            resultsPanel.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/process-audio', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || "Neznámá chyba při komunikaci se serverem.");
+                }
+
+                // Show Results
+                document.getElementById('anamnesisOutput').value = data.anamnesis;
+                document.getElementById('transcriptionOutput').textContent = data.transcription;
+
+                loadingState.classList.add('hidden');
+                resultsPanel.classList.remove('hidden');
+
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        async function copyToClipboard() {
+            const text = document.getElementById('anamnesisOutput').value;
+            if(!text) return;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                const copyText = document.getElementById('copyText');
+                copyText.textContent = "Zkopírováno!";
+                copyText.classList.add('text-gold-500');
+                setTimeout(() => {
+                    copyText.textContent = "Kopírovat";
+                    copyText.classList.remove('text-gold-500');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
+    </script>
+</body>
+</html>
