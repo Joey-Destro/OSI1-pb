@@ -4,6 +4,7 @@ import shutil
 import json
 import sys
 import webbrowser
+import signal
 from threading import Timer
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
@@ -15,6 +16,12 @@ from transformers import pipeline
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
+
+# Graceful shutdown handler
+def shutdown_server():
+    print("Shutting down the server gracefully...")
+    # This sends SIGTERM to the current process, which uvicorn catches to shutdown
+    os.kill(os.getpid(), signal.SIGTERM)
 
 # Inicializace Gemini Clienta
 try:
@@ -171,6 +178,12 @@ def process_audio(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Chyba při komunikaci s Gemini: {str(e)}")
+
+@app.post("/api/shutdown")
+def shutdown():
+    """Endpoint called by the browser when the tab is closed to prevent ghost processes."""
+    Timer(1.0, shutdown_server).start()
+    return {"message": "Shutting down..."}
 
 def get_base_path():
     """Get absolute path to resource, works for dev and for PyInstaller"""

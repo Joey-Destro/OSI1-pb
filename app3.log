@@ -1,0 +1,23 @@
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+`torch_dtype` is deprecated! Use `dtype` instead!
+WARNING: Could not initialize Gemini Client. Check your GEMINI_API_KEY. Error: No API key was provided. Please pass a valid API key. Learn how to create an API key at https://ai.google.dev/gemini-api/docs/api-key.
+Loading mikr/whisper-small-cs-cv11 model... This might take a moment.
+Loading weights:   0%|          | 0/479 [00:00<?, ?it/s]Loading weights: 100%|██████████| 479/479 [00:00<00:00, 9935.96it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Using `chunk_length_s` is very experimental with seq2seq models. The results will not necessarily be entirely accurate and will have caveats. More information: https://github.com/huggingface/transformers/pull/20104. Ignore this warning with pipeline(..., ignore_warning=True). To use Whisper for long-form transcription, use rather the model's `generate` method directly as the model relies on it's own chunking mechanism (cf. Whisper original paper, section 3.8. Long-form Transcription).
+INFO:     Started server process [310520]
+INFO:     Waiting for application startup.
+Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<BaseApiClient.aclose() done, defined at /home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/google/genai/_api_client.py:2095> exception=AttributeError("'BaseApiClient' object has no attribute '_async_httpx_client'")>
+Traceback (most recent call last):
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/google/genai/_api_client.py", line 2100, in aclose
+    await self._async_httpx_client.aclose()  # type: ignore[union-attr]
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'BaseApiClient' object has no attribute '_async_httpx_client'
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:7860 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [310520]

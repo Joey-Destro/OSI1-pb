@@ -37,9 +37,9 @@ This script will automatically start the FastAPI server using Uvicorn on `http:/
 
 *Note: The first time you run the application, it will download the Hugging Face Whisper model (`mikr/whisper-small-cs-cv11`), which may take a few minutes depending on your internet connection.*
 
-## 3. Building the Standalone Executable
+## 3. Building the Windows Installer
 
-If you want to package the application so it can be easily distributed and run on a machine without installing Python or dependencies, you can use the provided build script.
+If you want to package the application into a user-friendly Windows Setup file (so it feels like a real desktop application), you can use the provided build script. You must have [NSIS (Nullsoft Scriptable Install System)](https://nsis.sourceforge.io/) installed and available in your system `PATH`.
 
 Run the build script:
 ```bash
@@ -48,9 +48,12 @@ python build_installer.py
 
 This script will:
 1. Use `PyInstaller` to bundle the application into a standalone folder (located in `dist/UsirevAI`). We use a folder structure rather than a single file because extracting massive Machine Learning libraries (like PyTorch) from a single file takes a prohibitively long time upon every launch.
-2. Archive the output directory into a portable `UsirevAI_LocalApp.zip` file.
+2. Automatically generate an NSIS script (`installer.nsi`) and compile it using `makensis`.
+3. Output a `UsirevAI_Setup.exe` file.
 
-You can then distribute the `.zip` file. The end user simply extracts it and runs the `UsirevAI` executable inside.
+You can distribute the `UsirevAI_Setup.exe` file to users. When they run it, it will present a standard Windows installation wizard ("Next -> Next -> Finish"), install the app to `C:\Program Files\UsirevAI`, create a desktop shortcut, a start menu entry, and register an uninstaller.
+
+*(Note: If NSIS is not installed, the build script will safely fall back to creating a simple `UsirevAI_LocalApp.zip` archive).*
 
 ## 4. How to Use the Application
 
