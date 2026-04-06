@@ -2,6 +2,10 @@ import os
 import uuid
 import shutil
 import json
+import sys
+import webbrowser
+from threading import Timer
+import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -73,8 +77,8 @@ Lékař: [text]
 Pacient: [text]
 
 2. KROK: Tvorba anamnézy
-Z rozhovoru extrahuj informace do připravených polí anamnézy. 
-Pokud informace v textu chybí, napiš do daného pole pouze "Neuvedeno". 
+Z rozhovoru extrahuj informace do připravených polí anamnézy.
+Pokud informace v textu chybí, napiš do daného pole pouze "Neuvedeno".
 U alergií (AA), pokud nejsou, napiš "Neguje". Nevymýšlej si.
 
 Zde je surový přepis rozhovoru k analýze:
@@ -133,7 +137,7 @@ def process_audio(
         # 4. Magie s Gemini
         print(f"Sending to Gemini to format dialogue and extract anamnesis...")
         prompt = SYSTEM_PROMPT + transcribed_text
-        
+
         response = client.models.generate_content(
             model=gemini_model,
             contents=prompt,
@@ -143,10 +147,10 @@ def process_audio(
                 temperature=0.1
             )
         )
-        
+
         result_data = json.loads(response.text)
         anamneza_data = result_data["anamneza"]
-        
+
         # --- ZDE SKLÁDÁME VÝSLEDNÝ TEXT S PEVNÝM ODŘÁDKOVÁNÍM ---
         formatted_anamnesis = (
             "Anamnéza\n\n"
@@ -159,7 +163,7 @@ def process_audio(
             f"Obj. - {anamneza_data['obj']}\n\n"
             f"Vyšetření - {anamneza_data['vysetreni']}"
         ) # TATO ZÁVORKA JE KRITICKÁ
-        
+
         return {
             "anamnesis": formatted_anamnesis,
             "transcription": result_data["rozdeleny_dialog"]
@@ -168,12 +172,32 @@ def process_audio(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Chyba při komunikaci s Gemini: {str(e)}")
 
-# Mount static files and templates
-os.makedirs("static", exist_ok=True)
+def get_base_path():
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return base_path
+
+static_dir = os.path.join(get_base_path(), "static")
+os.makedirs(static_dir, exist_ok=True)
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
-    with open("static/index.html", "r", encoding="utf-8") as f:
+    index_path = os.path.join(static_dir, "index.html")
+    # If the file doesn't exist, provide a basic fallback or it will raise an error.
+    if not os.path.exists(index_path):
+        return "<html><body><h1>UsirevAI Application is running. UI not found.</h1></body></html>"
+    with open(index_path, "r", encoding="utf-8") as f:
         return f.read()
 
-app.mount("/", StaticFiles(directory="static"), name="static")
+app.mount("/", StaticFiles(directory=static_dir), name="static")
+
+def open_browser():
+    webbrowser.open_new("http://127.0.0.1:7860/")
+
+if __name__ == "__main__":
+    Timer(1.5, open_browser).start()
+    uvicorn.run(app, host="127.0.0.1", port=7860)
