@@ -2,6 +2,9 @@ import os
 import subprocess
 import shutil
 import platform
+import urllib.request
+import zipfile
+import io
 
 def create_nsis_script():
     nsis_content = """
@@ -158,16 +161,58 @@ def build():
             f.write(script)
 
         print("Compiling NSIS Setup executable...")
-        try:
-            subprocess.run(["makensis", "installer.nsi"], check=True)
-            print("Successfully created UsirevAI_Setup.exe!")
-        except FileNotFoundError:
-            print("WARNING: 'makensis' not found. NSIS compiler is not installed or not in PATH.")
-            print("To build the Windows Setup executable, please install NSIS (https://nsis.sourceforge.io/).")
+
+        # Determine makensis command
+        makensis_cmd = "makensis"
+
+        # Try to find makensis in PATH first
+        if shutil.which(makensis_cmd) is None:
+            print("makensis not found in PATH. Downloading portable NSIS compiler...")
+            # Download NSIS portable zip
+            # Using SourceForge download link for NSIS 3.10
+            nsis_url = "https://sourceforge.net/projects/nsis/files/NSIS%203/3.10/nsis-3.10.zip/download"
+            nsis_dir = "nsis_temp"
+            try:
+                with urllib.request.urlopen(nsis_url) as response:
+                    with zipfile.ZipFile(io.BytesIO(response.read())) as z:
+                        z.extractall(nsis_dir)
+
+                # The zip extracts into a folder called 'nsis-3.10'
+                if platform.system() == "Windows":
+                    makensis_cmd = os.path.join(nsis_dir, "nsis-3.10", "makensis.exe")
+                else:
+                    # On Linux/macOS, we can't just run the Windows makensis.exe directly.
+                    # We would need Wine, or a native build of makensis.
+                    # If they are on Linux and didn't apt-get install nsis, fallback to zip.
+                    print("NSIS download successful, but you are not on Windows.")
+                    print("To compile the Windows Setup on Linux/macOS, please install native 'makensis' (e.g. sudo apt install nsis).")
+                    makensis_cmd = None
+
+            except Exception as e:
+                print(f"Failed to download NSIS: {e}")
+                makensis_cmd = None
+
+        if makensis_cmd is not None:
+            try:
+                subprocess.run([makensis_cmd, "installer.nsi"], check=True)
+                print("Successfully created UsirevAI_Setup.exe!")
+            except subprocess.CalledProcessError as e:
+                print(f"NSIS compilation failed: {e}")
+                makensis_cmd = None # Fallback to zip
+            except FileNotFoundError:
+                print(f"Could not execute {makensis_cmd}")
+                makensis_cmd = None
+
+        if makensis_cmd is None:
             print("Falling back to creating a zip archive...")
             dist_dir = os.path.join("dist", "UsirevAI")
             shutil.make_archive("UsirevAI_LocalApp", "zip", dist_dir)
             print("Successfully created UsirevAI_LocalApp.zip")
+
+        # Cleanup temp NSIS dir if it was created
+        if os.path.exists("nsis_temp"):
+            print("Cleaning up temporary NSIS files...")
+            shutil.rmtree("nsis_temp", ignore_errors=True)
 
     except subprocess.CalledProcessError as e:
         print(f"Error during build process: {e}")

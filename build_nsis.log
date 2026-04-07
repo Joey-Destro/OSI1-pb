@@ -1,0 +1,136 @@
+214 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.4
+215 INFO: Python: 3.12.13
+217 INFO: Platform: Linux-6.8.0-x86_64-with-glibc2.39
+218 INFO: Python environment: /home/jules/.pyenv/versions/3.12.13
+218 INFO: wrote /app/UsirevAI.spec
+220 INFO: Removing temporary files and cleaning cache in /home/jules/.cache/pyinstaller
+236 INFO: Module search paths (PYTHONPATH):
+['/home/jules/.pyenv/versions/3.12.13/lib/python312.zip',
+ '/home/jules/.pyenv/versions/3.12.13/lib/python3.12',
+ '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/lib-dynload',
+ '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages',
+ '/app']
+847 INFO: Appending 'datas' from .spec
+847 INFO: checking Analysis
+847 INFO: Building Analysis because Analysis-00.toc is non existent
+847 INFO: Looking for Python shared library...
+862 INFO: Using Python shared library: /home/jules/.pyenv/versions/3.12.13/lib/libpython3.12.so.1.0
+862 INFO: Running Analysis Analysis-00.toc
+862 INFO: Target bytecode optimization level: 0
+862 INFO: Initializing module dependency graph...
+864 INFO: Initializing module graph hook caches...
+888 INFO: Analyzing modules for base_library.zip ...
+2428 INFO: Processing standard module hook 'hook-encodings.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+5088 INFO: Processing standard module hook 'hook-pickle.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+6865 INFO: Processing standard module hook 'hook-heapq.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+7528 INFO: Caching module dependency graph...
+7595 INFO: Analyzing /app/main.py
+7691 INFO: Processing standard module hook 'hook-platform.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+7811 INFO: Processing standard module hook 'hook-uvicorn.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+8600 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+8903 INFO: Processing standard module hook 'hook-xml.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+9330 INFO: Processing standard module hook 'hook-_ctypes.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+10580 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+10582 INFO: SetuptoolsInfo: initializing cached setuptools info...
+11964 INFO: Processing standard module hook 'hook-difflib.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+12718 INFO: Processing standard module hook 'hook-websockets.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+14192 INFO: Processing standard module hook 'hook-anyio.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+15733 INFO: Processing standard module hook 'hook-pydantic.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+16719 INFO: Processing standard module hook 'hook-rich.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+17629 INFO: Processing standard module hook 'hook-pygments.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+19725 INFO: Processing standard module hook 'hook-sysconfig.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+20282 INFO: Processing standard module hook 'hook-zoneinfo.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/pydub/utils.py:300: SyntaxWarning: invalid escape sequence '\('
+  m = re.match('([su]([0-9]{1,2})p?) \(([0-9]{1,2}) bit\)$', token)
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/pydub/utils.py:301: SyntaxWarning: invalid escape sequence '\('
+  m2 = re.match('([su]([0-9]{1,2})p?)( \(default\))?$', token)
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/pydub/utils.py:310: SyntaxWarning: invalid escape sequence '\('
+  elif re.match('(flt)p?( \(default\))?$', token):
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/pydub/utils.py:314: SyntaxWarning: invalid escape sequence '\('
+  elif re.match('(dbl)p?( \(default\))?$', token):
+22745 INFO: Processing standard module hook 'hook-torch.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+7320 WARNING: Failed to collect submodules for 'torch.utils.tensorboard' because importing 'torch.utils.tensorboard' raised: ModuleNotFoundError: No module named 'tensorboard'
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/utils/hooks/__init__.py:665: DeprecationWarning: `torch.distributed._sharding_spec` will be deprecated, use `torch.distributed._shard.sharding_spec` instead
+  __import__(name)
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/utils/hooks/__init__.py:665: DeprecationWarning: `torch.distributed._sharded_tensor` will be deprecated, use `torch.distributed._shard.sharded_tensor` instead
+  __import__(name)
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/utils/hooks/__init__.py:665: DeprecationWarning: `torch.distributed._shard.checkpoint` will be deprecated, use `torch.distributed.checkpoint` instead
+  __import__(name)
+45080 INFO: hook-torch: inferred hidden imports for CUDA libraries: ['nvidia.cudnn', 'nvidia.cusparselt', 'nvidia.nccl', 'nvidia.nvshmem']
+46569 INFO: Processing standard module hook 'hook-numpy.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+50761 INFO: Processing standard module hook 'hook-charset_normalizer.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+72478 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+82085 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+82086 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+82095 INFO: Processing standard module hook 'hook-setuptools.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+82116 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+82171 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+82172 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+82224 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+82224 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+82676 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+82994 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+82996 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+83010 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+83010 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+83666 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+83666 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+84634 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+84635 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+84737 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+84775 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/pre_safe_import_module'
+84776 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+84854 INFO: Processing standard module hook 'hook-triton.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+89404 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/pre_safe_import_module'
+90162 INFO: Processing standard module hook 'hook-sqlite3.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+95871 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks'
+108139 INFO: Processing standard module hook 'hook-fsspec.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+110726 INFO: Processing standard module hook 'hook-urllib3.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+126656 INFO: Processing standard module hook 'hook-jinja2.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+142612 INFO: Processing standard module hook 'hook-transformers.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+144815 INFO: Processing standard module hook 'hook-regex.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+145776 INFO: Processing standard module hook 'hook-certifi.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+196785 INFO: Processing standard module hook 'hook-cryptography.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+197666 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+199301 INFO: Processing standard module hook 'hook-pycparser.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+201880 INFO: Processing module hooks (post-graph stage)...
+202482 WARNING: Hidden import "pycparser.lextab" not found!
+202482 WARNING: Hidden import "pycparser.yacctab" not found!
+206965 INFO: Processing pre-safe-import-module hook 'hook-tensorflow.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/pre_safe_import_module'
+221785 INFO: Processing standard module hook 'hook-nvidia.nccl.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+221888 INFO: Processing standard module hook 'hook-nvidia.cudnn.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+222102 INFO: Performing binary vs. data reclassification (422 entries)
+222343 INFO: Looking for ctypes DLLs
+222665 WARNING: Ignoring /usr/lib64/libgomp.so.1 imported from /home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/torch/_inductor/codecache.py - only basenames are supported with ctypes imports!
+222760 WARNING: Library libamdhip64.so required via ctypes not found
+222782 WARNING: Library libhiprtc.so required via ctypes not found
+223234 WARNING: Library libcudart.so required via ctypes not found
+223483 INFO: Analyzing run-time hooks ...
+223539 INFO: Including run-time hook 'pyi_rth_inspect.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/rthooks'
+223544 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/rthooks'
+223547 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/rthooks'
+223550 INFO: Including run-time hook 'pyi_rth_setuptools.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/hooks/rthooks'
+223552 INFO: Including run-time hook 'pyi_rth_cryptography_openssl.py' from '/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/_pyinstaller_hooks_contrib/rthooks'
+223786 INFO: Creating base_library.zip...
+223830 INFO: Looking for dynamic libraries
+226385 INFO: Warnings written to /app/build/UsirevAI/warn-UsirevAI.txt
+227116 INFO: Graph cross-reference written to /app/build/UsirevAI/xref-UsirevAI.html
+227491 INFO: checking PYZ
+227491 INFO: Building PYZ because PYZ-00.toc is non existent
+227491 INFO: Building PYZ (ZlibArchive) /app/build/UsirevAI/PYZ-00.pyz
+236250 INFO: Building PYZ (ZlibArchive) /app/build/UsirevAI/PYZ-00.pyz completed successfully.
+236614 INFO: checking PKG
+236614 INFO: Building PKG because PKG-00.toc is non existent
+236614 INFO: Building PKG (CArchive) UsirevAI.pkg
+237094 INFO: Building PKG (CArchive) UsirevAI.pkg completed successfully.
+237096 INFO: Bootloader /home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/PyInstaller/bootloader/Linux-64bit-intel/run
+237096 INFO: checking EXE
+237096 INFO: Building EXE because EXE-00.toc is non existent
+237096 INFO: Building EXE from EXE-00.toc
+237096 INFO: Copying bootloader EXE to /app/build/UsirevAI/UsirevAI
+237099 INFO: Appending PKG archive to custom ELF section in EXE
+239000 INFO: Building EXE from EXE-00.toc completed successfully.
+239098 INFO: checking COLLECT
+239099 INFO: Building COLLECT because COLLECT-00.toc is non existent
+239099 INFO: Removing dir /app/dist/UsirevAI
+241617 INFO: Building COLLECT COLLECT-00.toc

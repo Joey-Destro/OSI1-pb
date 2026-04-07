@@ -12,6 +12,23 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydub import AudioSegment
 import torch
+
+# --- PyInstaller / PyTorch Compiler Hotfix ---
+# Transformers attempts to use @torch.compiler.disable which fails in PyInstaller
+# due to broken PyTorch dynamo imports or missing 'reason' arguments in DummyDynamo.
+# We stub it out safely before transformers is imported to avoid import chain crashes.
+import types
+
+def _dummy_disable(fn=None, recursive=True, **kwargs):
+    if fn is None:
+        return lambda x: x
+    return fn
+
+if not hasattr(torch, "compiler"):
+    torch.compiler = types.SimpleNamespace(disable=_dummy_disable)
+else:
+    torch.compiler.disable = _dummy_disable
+
 from transformers import pipeline
 from google import genai
 from google.genai import types
