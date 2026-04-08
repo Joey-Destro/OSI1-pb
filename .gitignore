@@ -1,0 +1,11 @@
+build/
+dist/
+*.spec
+*.zip
+__pycache__/
+*.pyc
+temp_audio/
+build_log.txt
+*.ico
+nsis_temp/
+nsis-3.10/

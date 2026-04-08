@@ -78,6 +78,12 @@
             100% { transform: rotate(360deg); }
         }
     </style>
+    <script>
+        // Shutdown the backend server when the window is closed to prevent ghost processes
+        window.addEventListener('beforeunload', function (e) {
+            navigator.sendBeacon('/api/shutdown');
+        });
+    </script>
 </head>
 <body class="antialiased flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
@@ -291,7 +297,7 @@
 
             const formData = new FormData();
             formData.append("audio", audioFile);
-            formData.append("gemini_model", "gemini-3.1-flash-lite-preview");
+            formData.append("gemini_model", "gemini-1.5-flash");
 
             // Set UI to loading
             resultsPanel.classList.add('hidden');
