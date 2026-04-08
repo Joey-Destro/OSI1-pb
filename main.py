@@ -14,20 +14,41 @@ from pydub import AudioSegment
 import torch
 
 # --- PyInstaller / PyTorch Compiler Hotfix ---
-# Transformers attempts to use @torch.compiler.disable which fails in PyInstaller
-# due to broken PyTorch dynamo imports or missing 'reason' arguments in DummyDynamo.
-# We stub it out safely before transformers is imported to avoid import chain crashes.
+# Transformers attempts to use @torch.compiler decorators which fail in PyInstaller
+# due to broken PyTorch dynamo imports deep inside PyInstaller's frozen environment.
+# We must aggressively mock `torch.compiler` and `torch._dynamo` so that lazy imports
+# within PyTorch don't trigger the broken `torch._numpy` dependency chain.
+import sys
 import types
 
-def _dummy_disable(fn=None, recursive=True, **kwargs):
+def _dummy_decorator(fn=None, *args, **kwargs):
     if fn is None:
         return lambda x: x
     return fn
 
+# 1. Block the broken module completely via sys.modules.
+# If we even run "import torch._dynamo", it crashes inside torch._numpy in PyInstaller.
+# By putting a fake module in sys.modules, any later attempt to import it will just get the fake.
+dummy_dynamo = types.ModuleType("torch._dynamo")
+dummy_dynamo.disable = _dummy_decorator
+dummy_dynamo.allow_in_graph = _dummy_decorator
+sys.modules["torch._dynamo"] = dummy_dynamo
+
+# 2. Aggressively stub torch.compiler
 if not hasattr(torch, "compiler"):
-    torch.compiler = types.SimpleNamespace(disable=_dummy_disable)
+    torch.compiler = types.SimpleNamespace()
+
+torch.compiler.disable = _dummy_decorator
+torch.compiler.allow_in_graph = _dummy_decorator
+torch.compiler.is_compiling = lambda: False
+torch.compiler.is_dynamo_compiling = lambda: False
+
+# 3. Inject our mock into sys.modules so any direct imports get the mock
+if "torch.compiler" in sys.modules:
+    sys.modules["torch.compiler"].disable = _dummy_decorator
+    sys.modules["torch.compiler"].allow_in_graph = _dummy_decorator
 else:
-    torch.compiler.disable = _dummy_disable
+    sys.modules["torch.compiler"] = torch.compiler
 
 from transformers import pipeline
 from google import genai
